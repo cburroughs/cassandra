@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.addthis.metrics.reporter.config.ReporterConfig;
 import com.google.common.collect.Iterables;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
@@ -285,6 +286,19 @@ public class CassandraDaemon
         }
 
         Mx4jTool.maybeLoad();
+
+        // Metrics
+        String metricsReporterConfigFile = System.getProperty("cassandra.metricsReporterConfigFile");
+        logger.info("Trying to load metrics-reporter-config from file: {}", metricsReporterConfigFile);
+        try
+        {
+            String reportFileLocation = CassandraDaemon.class.getClassLoader().getResource(metricsReporterConfigFile).getFile();
+            ReporterConfig.loadFromFileAndValidate(reportFileLocation).enableAll();
+        }
+        catch (Exception e)
+        {
+            logger.warn("Failed to load metrics-reporter-config, metric sinks will not be activated", e);
+        }
 
         // Thift
         InetAddress rpcAddr = DatabaseDescriptor.getRpcAddress();

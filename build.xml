@@ -384,6 +384,7 @@
           <dependency groupId="org.apache.cassandra" artifactId="cassandra-all" version="${version}" />
           <dependency groupId="org.apache.cassandra" artifactId="cassandra-thrift" version="${version}" />
           <dependency groupId="com.yammer.metrics" artifactId="metrics-core" version="2.2.0" />
+          <dependency groupId="com.addthis.metrics" artifactId="reporter-config" version="2.0.5" />
           <dependency groupId="edu.stanford.ppl" artifactId="snaptree" version="0.1" />
           <dependency groupId="org.mindrot" artifactId="jbcrypt" version="0.3m" />
           <dependency groupId="io.netty" artifactId="netty" version="3.6.6.Final" />
@@ -471,6 +472,11 @@
         <dependency groupId="edu.stanford.ppl" artifactId="snaptree"/>
         <dependency groupId="org.mindrot" artifactId="jbcrypt"/>
         <dependency groupId="com.yammer.metrics" artifactId="metrics-core"/>
+        <dependency groupId="com.addthis.metrics" artifactId="reporter-config"/>
+        <dependency groupId="org.hibernate" artifactId="hibernate-validator" />
+        <dependency groupId="javax.validation" artifactId="validation-api"/>
+        <dependency groupId="org.jboss.logging" artifactId="jboss-logging"/>
+
         
         <dependency groupId="log4j" artifactId="log4j"/>
         <!-- cassandra has a hard dependency on log4j, so force slf4j's log4j provider at runtime -->

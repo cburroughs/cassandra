@@ -38,7 +38,7 @@ console:
         - "^org.apache.cassandra.metrics.DroppedMetrics.+"
         - "^org.apache.cassandra.metrics.ReadRepair.+"
         - "^org.apache.cassandra.metrics.Storage.+"
-        - "^org.apache.cassandra.metrics.ThradPools.+"
+        - "^org.apache.cassandra.metrics.ThreadPools.+"
 
 
 

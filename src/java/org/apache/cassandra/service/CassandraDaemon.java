@@ -364,7 +364,7 @@ public class CassandraDaemon
         try
         {
             String reportFileLocation = CassandraDaemon.class.getClassLoader().getResource(metricsReporterConfigFile).getFile();
-            ReporterConfig.loadFromFileAndValidate(reportFileLocation).enableAll();
+            ReporterConfig.loadFromFile(reportFileLocation).enableAll();
         }
         catch (Exception e)
         {

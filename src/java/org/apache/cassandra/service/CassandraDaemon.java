@@ -360,15 +360,18 @@ public class CassandraDaemon
 
         // Metrics
         String metricsReporterConfigFile = System.getProperty("cassandra.metricsReporterConfigFile");
-        logger.info("Trying to load metrics-reporter-config from file: {}", metricsReporterConfigFile);
-        try
+        if (metricsReporterConfigFile != null)
         {
-            String reportFileLocation = CassandraDaemon.class.getClassLoader().getResource(metricsReporterConfigFile).getFile();
-            ReporterConfig.loadFromFile(reportFileLocation).enableAll();
-        }
-        catch (Exception e)
-        {
-            logger.warn("Failed to load metrics-reporter-config, metric sinks will not be activated", e);
+            logger.info("Trying to load metrics-reporter-config from file: {}", metricsReporterConfigFile);
+            try
+            {
+                String reportFileLocation = CassandraDaemon.class.getClassLoader().getResource(metricsReporterConfigFile).getFile();
+                ReporterConfig.loadFromFile(reportFileLocation).enableAll();
+            }
+            catch (Exception e)
+            {
+                logger.warn("Failed to load metrics-reporter-config, metric sinks will not be activated", e);
+            }
         }
 
         // Thift

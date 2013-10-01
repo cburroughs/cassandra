@@ -454,9 +454,6 @@
         <dependency groupId="org.mindrot" artifactId="jbcrypt"/>
         <dependency groupId="com.yammer.metrics" artifactId="metrics-core"/>
         <dependency groupId="com.addthis.metrics" artifactId="reporter-config"/>
-        <dependency groupId="org.hibernate" artifactId="hibernate-validator" />
-        <dependency groupId="javax.validation" artifactId="validation-api"/>
-        <dependency groupId="org.jboss.logging" artifactId="jboss-logging"/>
         <dependency groupId="com.thinkaurelius.thrift" artifactId="thrift-server" version="0.3.2"/>
 
         <dependency groupId="log4j" artifactId="log4j"/>

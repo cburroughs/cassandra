@@ -39,9 +39,3 @@ console:
         - "^org.apache.cassandra.metrics.ReadRepair.+"
         - "^org.apache.cassandra.metrics.Storage.+"
         - "^org.apache.cassandra.metrics.ThreadPools.+"
-
-
-
-
-
-

@@ -473,10 +473,6 @@
         <dependency groupId="org.mindrot" artifactId="jbcrypt"/>
         <dependency groupId="com.yammer.metrics" artifactId="metrics-core"/>
         <dependency groupId="com.addthis.metrics" artifactId="reporter-config"/>
-        <dependency groupId="org.hibernate" artifactId="hibernate-validator" />
-        <dependency groupId="javax.validation" artifactId="validation-api"/>
-        <dependency groupId="org.jboss.logging" artifactId="jboss-logging"/>
-
         
         <dependency groupId="log4j" artifactId="log4j"/>
         <!-- cassandra has a hard dependency on log4j, so force slf4j's log4j provider at runtime -->

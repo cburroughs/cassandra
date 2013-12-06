@@ -36,6 +36,9 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.apache.cassandra.concurrent.JMXEnabledThreadPoolExecutor;
+import org.apache.cassandra.concurrent.Stage;
+import org.apache.cassandra.concurrent.StageManager;
 import org.apache.cassandra.config.CFMetaData;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.cassandra.config.DatabaseDescriptor;
@@ -356,6 +359,8 @@ public class CassandraDaemon
 
         Mx4jTool.maybeLoad();
 
+        waitForGossipToSettle();
+
         // Thift
         InetAddress rpcAddr = DatabaseDescriptor.getRpcAddress();
         int rpcPort = DatabaseDescriptor.getRpcPort();
@@ -478,6 +483,50 @@ public class CassandraDaemon
     {
         stop();
         destroy();
+    }
+
+
+    private void waitForGossipToSettle()
+    {
+        if (System.getProperty("cassandra.skip_wait_for_gossip_to_settle","false").equalsIgnoreCase("true"))
+        {
+            return;
+        }
+        int gossipSettleMinWaitMS = 5000;
+        int gossipSettlePollIntervalMS = 1000;
+        int gossipSettlePollSuccessRequired = 3;
+
+        logger.info("waiting for gossip to settle before accepting client requests...");
+        try
+        {
+            Thread.sleep(gossipSettleMinWaitMS);
+            int totalPolls = 0;
+            int numOkay = 0;
+            JMXEnabledThreadPoolExecutor gossipStage = (JMXEnabledThreadPoolExecutor)StageManager.getStage(Stage.GOSSIP);
+            while (numOkay < gossipSettlePollSuccessRequired)
+            {
+                Thread.sleep(gossipSettlePollIntervalMS);
+                long completed = gossipStage.getCompletedTasks();
+                long active = gossipStage.getActiveCount();
+                long pending = gossipStage.getPendingTasks();
+                if (completed > 0 && active == 0 && pending == 0)
+                {
+                    logger.debug("gossip looks settled. CompletedTasks: {}", completed);
+                    numOkay++;
+                }
+                else
+                {
+                    logger.warn("gossip not settled after {} polls. Gossip Stage active/pending: {}/{}", new Object[] {totalPolls, active, pending});
+                    numOkay = 0;
+                }
+                totalPolls++;
+            }
+            logger.info("gossip settled after {} extra polls, proceeding", totalPolls - gossipSettlePollSuccessRequired);
+        }
+        catch (InterruptedException e)
+        {
+            logger.error("unable to sleep", e);
+        }
     }
 
     public static void stop(String[] args)
